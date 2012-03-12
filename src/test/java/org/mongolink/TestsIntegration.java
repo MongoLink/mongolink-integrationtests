@@ -22,10 +22,14 @@
 package org.mongolink;
 
 import com.google.common.collect.Lists;
-import com.mongodb.*;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
-import org.junit.*;
-import org.mongolink.domain.UpdateStrategies;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
 import org.mongolink.domain.mapper.ContextBuilder;
@@ -42,18 +46,9 @@ import static org.junit.Assert.assertThat;
 
 
 @SuppressWarnings("unchecked")
-public class TestsIntegration {
+public class TestsIntegration extends TestsWithMongo {
 
-    @BeforeClass
-    public static void beforeClass() {
-        ContextBuilder builder = new ContextBuilder("org.mongolink.test.integrationMapping");
-        sessionManager = MongoSessionManager.create(builder,
-                Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF));
-        mongoSession = sessionManager.createSession();
-        db = mongoSession.getDb();
-    }
-
-    private static void initData() {
+    private void initData() {
         BasicDBObject fakeEntity = new BasicDBObject();
         fakeEntity.put("_id", new ObjectId("4d9d9b5e36a9a4265ea9ecbe"));
         fakeEntity.put("value", "fake entity value");
@@ -76,12 +71,6 @@ public class TestsIntegration {
         naturalIdEntity.put("value", "naturalvalue");
 
         db.getCollection("fakeentitywithnaturalid").insert(naturalIdEntity);
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        db.dropDatabase();
-        sessionManager.close();
     }
 
     @Before
@@ -250,7 +239,4 @@ public class TestsIntegration {
 
     }
 
-    private static DB db;
-    private static MongoSession mongoSession;
-    private static MongoSessionManager sessionManager;
 }

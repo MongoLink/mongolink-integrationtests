@@ -26,7 +26,6 @@ public class FakeChildEntity extends FakeEntity {
 
     private String childName;
 
-
     public String getChildName() {
         return childName;
     }

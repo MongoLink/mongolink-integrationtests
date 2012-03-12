@@ -69,6 +69,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         List<FakeChildEntity> fakeEntities = mongoSession.getAll(FakeChildEntity.class);
 
+        //failed, 2 entities return
         assertThat(fakeEntities.size(), is(1));
     }
 }

@@ -107,7 +107,8 @@ public class TestsIntegration extends TestsWithMongo {
     @Test
     public void canUseSessionManager() {
         ContextBuilder contextBuilder = TestFactory.contextBuilder().withFakeEntity();
-        MongoSessionManager manager = MongoSessionManager.create(contextBuilder, Settings.defaultInstance());
+        ConfigProperties config = new ConfigProperties();
+        MongoSessionManager manager = MongoSessionManager.create(contextBuilder, new ConfigProperties().addSettings(Settings.defaultInstance()));
         MongoSession session = manager.createSession();
         session.save(new FakeEntity("new fake entity"));
     }

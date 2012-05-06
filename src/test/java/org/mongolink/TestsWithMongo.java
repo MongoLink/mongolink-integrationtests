@@ -34,10 +34,7 @@ public class TestsWithMongo {
         ContextBuilder builder = new ContextBuilder("org.mongolink.test.integrationMapping");
         ConfigProperties config = new ConfigProperties();
         sessionManager = MongoSessionManager.create(builder,
-                Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF).
-                        withHost(config.getDBHost()).withPort(config.getDBPort()).
-                        withDbName(config.getDBName()).
-                        withAuthentication(config.getDBUser(), config.getDBPassword()));
+                new ConfigProperties().addSettings(Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF)));
 
         mongoSession = sessionManager.createSession();
         db = mongoSession.getDb();

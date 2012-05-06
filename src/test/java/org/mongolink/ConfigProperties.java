@@ -26,6 +26,12 @@ import java.io.InputStream;
 
 public class ConfigProperties {
 
+    public Settings addSettings(Settings settings) {
+        return settings.withHost(getDBHost()).withPort(getDBPort()).
+                withDbName(getDBName()).
+                withAuthentication(getDBUser(), getDBPassword());
+    }
+
     public String getDBHost() {
         return getProperty("db.host");
     }

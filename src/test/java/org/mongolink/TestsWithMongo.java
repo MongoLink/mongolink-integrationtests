@@ -32,8 +32,12 @@ public class TestsWithMongo {
     @BeforeClass
     public static void beforeClass() {
         ContextBuilder builder = new ContextBuilder("org.mongolink.test.integrationMapping");
+        ConfigProperties config = new ConfigProperties();
         sessionManager = MongoSessionManager.create(builder,
-                Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF));
+                Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF).
+                        withHost(config.getDBHost()).withPort(config.getDBPort()).
+                        withDbName(config.getDBName()).
+                        withAuthentication(config.getDBUser(), config.getDBPassword()));
 
         mongoSession = sessionManager.createSession();
         db = mongoSession.getDb();
@@ -41,9 +45,18 @@ public class TestsWithMongo {
 
     @AfterClass
     public static void afterClass() {
-        db.dropDatabase();
+        dropCollections();
         sessionManager.close();
     }
+
+    private static void dropCollections() {
+        for (String collection : db.getCollectionNames()) {
+            if (!collection.startsWith("system.")) {
+                db.getCollection(collection).drop();
+            }
+        }
+    }
+
 
     protected static MongoSessionManager sessionManager;
     protected static MongoSession mongoSession;

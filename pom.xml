@@ -12,6 +12,25 @@
     <scm>
         <developerConnection>scm:git:git@github.com:MongoLink/mongolink-integrationtests.git</developerConnection>
     </scm>
+    <properties>
+        <db.host>127.0.0.1</db.host>
+        <db.port>27017</db.port>
+        <db.user></db.user>
+        <db.password></db.password>
+        <db.name>test</db.name>
+    </properties>
+    <profiles>
+        <profile>
+            <id>itg</id>
+            <properties>
+                <db.host>flame.mongohq.com</db.host>
+                <db.port>27020</db.port>
+                <db.user>ic</db.user>
+                <db.password>ic</db.password>
+                <db.name>mongolink</db.name>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.mongolink</groupId>
@@ -35,6 +54,12 @@
                 <version>2.2</version>
             </plugin>
         </plugins>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
     <repositories>
         <repository>

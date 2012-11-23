@@ -107,7 +107,6 @@ public class TestsIntegration extends TestsWithMongo {
     @Test
     public void canUseSessionManager() {
         ContextBuilder contextBuilder = TestFactory.contextBuilder().withFakeEntity();
-        ConfigProperties config = new ConfigProperties();
         MongoSessionManager manager = MongoSessionManager.create(contextBuilder, new ConfigProperties().addSettings(Settings.defaultInstance()));
         MongoSession session = manager.createSession();
         session.save(new FakeEntity("new fake entity"));
@@ -227,17 +226,19 @@ public class TestsIntegration extends TestsWithMongo {
     }
 
     @Test
-    public void canRemoveElementFromArray() {
+    public void canRemoveAnElementFromList() {
         FakeEntity fake = new FakeEntity("test");
         fake.addComment("a comment");
+		fake.addComment("another comment");
         mongoSession.save(fake);
-        fake.getComments().clear();
 
-        mongoSession.stop();
-        mongoSession = sessionManager.createSession();
+		fake.getComments().remove(1);
+		mongoSession.stop();
+
+		mongoSession = sessionManager.createSession();
         final FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
-        assertThat(entityFound.getComments().size(), is(0));
-
+        assertThat(entityFound.getComments().size(), is(1));
+		assertThat(entityFound.getComments().get(0).getValue(), is("a comment"));
     }
 
 }

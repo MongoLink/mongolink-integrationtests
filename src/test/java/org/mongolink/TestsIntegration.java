@@ -40,9 +40,8 @@ import org.mongolink.test.factory.TestFactory;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 
 @SuppressWarnings("unchecked")
@@ -76,14 +75,12 @@ public class TestsIntegration extends TestsWithMongo {
     @Before
     public void before() {
         initData();
-        mongoSession.start();
     }
 
     @After
     public void after() {
-        mongoSession.stop();
-        db.getCollection("fakeentity").remove(new BasicDBObject());
-        db.getCollection("fakeentitywithnaturalid").remove(new BasicDBObject());
+        db.getCollection("fakeentity").drop();
+
     }
 
     @Test
@@ -146,35 +143,6 @@ public class TestsIntegration extends TestsWithMongo {
         assertThat(entityFound.getComments().size(), is(1));
     }
 
-    @Test
-    public void canGetByEqCriteria() {
-        final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
-        criteria.add(Restrictions.equals("value", "fake entity value"));
-
-        final List<FakeEntity> list = criteria.list();
-
-        assertThat(list.size(), is(1));
-    }
-
-    @Test
-    public void canGetByBetweenCriteria() {
-        final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
-        criteria.add(Restrictions.between("index", 42, 44));
-
-        final List<FakeEntity> list = criteria.list();
-
-        assertThat(list.size(), is(1));
-    }
-
-    @Test
-    public void canGetByBetweenCriteriaWithBadBoundaries() {
-        final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
-        criteria.add(Restrictions.between("index", 40, 42));
-
-        final List<FakeEntity> list = criteria.list();
-
-        assertThat(list.size(), is(0));
-    }
 
     @Test
     public void cappedCollectionDropItems() throws InterruptedException {

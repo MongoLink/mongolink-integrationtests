@@ -22,7 +22,9 @@
 package org.mongolink;
 
 import com.mongodb.DB;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mongolink.domain.UpdateStrategies;
 import org.mongolink.domain.mapper.ContextBuilder;
@@ -44,6 +46,16 @@ public class TestsWithMongo {
     public static void afterClass() {
         dropCollections();
         sessionManager.close();
+    }
+
+    @Before
+    public void parentBefore() {
+        mongoSession.start();
+    }
+
+    @After
+    public void parentAfter() {
+        mongoSession.stop();
     }
 
     private static void dropCollections() {

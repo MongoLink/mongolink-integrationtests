@@ -22,9 +22,6 @@
 package org.mongolink;
 
 
-import com.mongodb.BasicDBObject;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.test.entity.FakeChildEntity;
@@ -33,21 +30,11 @@ import org.mongolink.test.entity.OtherFakeChildEntity;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 public class TestsInheritanceIntegration extends TestsWithMongo {
 
-    @Before
-    public void before() {
-        mongoSession.start();
-    }
-
-    @After
-    public void after() {
-        mongoSession.stop();
-        db.getCollection("fakeentity").remove(new BasicDBObject());
-    }
 
     @Test
     public void canGetAllEntityWithInheritance() {

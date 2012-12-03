@@ -1,7 +1,5 @@
 package org.mongolink;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.mongolink.test.entity.EntityWithIdInt;
 import org.mongolink.test.entity.EntityWithUUID;
@@ -11,15 +9,6 @@ import static org.junit.Assert.*;
 
 public class TestsIdManagement extends TestsWithMongo {
 
-    @Before
-    public void before() {
-        mongoSession.start();
-    }
-
-    @After
-    public void after() {
-        mongoSession.stop();
-    }
 
     @Test
     public void canUseUUID() {

@@ -22,8 +22,10 @@
 package org.mongolink;
 
 
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mongolink.test.entity.ChildComment;
 import org.mongolink.test.entity.FakeChildEntity;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.OtherFakeChildEntity;
@@ -34,6 +36,11 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 public class TestsInheritanceIntegration extends TestsWithMongo {
+
+    @After
+    public void after() {
+        db.getCollection("fakeentity").drop();
+    }
 
 
     @Test
@@ -58,5 +65,18 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         //failed, 2 entities return
         assertThat(fakeEntities.size(), is(1));
+    }
+
+    @Test
+    public void canDealWithComponentInheritance() {
+        final FakeEntity fakeEntity = new FakeEntity("value");
+        fakeEntity.addComment(new ChildComment("jb"));
+        mongoSession.save(fakeEntity);
+
+        final List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
+
+        assertThat(fakeEntities.size(), is(1));
+        assertThat(fakeEntities.get(0).getComments().size(), is(1));
+        assertThat(fakeEntities.get(0).getComments().get(0), instanceOf(ChildComment.class));
     }
 }

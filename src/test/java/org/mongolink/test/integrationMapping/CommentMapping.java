@@ -22,6 +22,8 @@
 package org.mongolink.test.integrationMapping;
 
 import org.mongolink.domain.mapper.ComponentMap;
+import org.mongolink.domain.mapper.SubclassMap;
+import org.mongolink.test.entity.ChildComment;
 import org.mongolink.test.entity.Comment;
 
 
@@ -34,5 +36,11 @@ public class CommentMapping extends ComponentMap<Comment> {
     @Override
     protected void map() {
         property(element().getValue());
+        subclass(new SubclassMap<ChildComment>(ChildComment.class) {
+            @Override
+            protected void map() {
+                property(element().getName());
+            }
+        });
     }
 }

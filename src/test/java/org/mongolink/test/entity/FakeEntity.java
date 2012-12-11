@@ -56,6 +56,10 @@ public class FakeEntity {
         comments.add(new Comment(comment));
     }
 
+    public void addComment(Comment comment){
+        comments.add(comment);
+    }
+
     public void setValue(String value) {
         this.value = value;
     }

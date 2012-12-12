@@ -21,16 +21,16 @@
 
 package org.mongolink.test.integrationMapping;
 
-import org.mongolink.domain.mapper.EntityMap;
+import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.domain.mapper.SubclassMap;
 import org.mongolink.test.entity.FakeChildEntity;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.OtherFakeChildEntity;
 
 
-public class FakeEntityWithTwoSubclassMapping extends EntityMap<FakeEntity> {
+public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity> {
 
-    public FakeEntityWithTwoSubclassMapping() {
+    public FakeAggregateWithTwoSubclassMapping() {
         super(FakeEntity.class);
     }
 

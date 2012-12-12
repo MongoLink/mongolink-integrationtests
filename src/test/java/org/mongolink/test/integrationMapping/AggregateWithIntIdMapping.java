@@ -1,11 +1,11 @@
 package org.mongolink.test.integrationMapping;
 
-import org.mongolink.domain.mapper.EntityMap;
+import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.test.entity.EntityWithIdInt;
 
-public class EntityWithIntIdMapping extends EntityMap<EntityWithIdInt>{
+public class AggregateWithIntIdMapping extends AggregateMap<EntityWithIdInt> {
     
-    public EntityWithIntIdMapping() {
+    public AggregateWithIntIdMapping() {
         super(EntityWithIdInt.class);
     }
 

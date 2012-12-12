@@ -21,13 +21,13 @@
 
 package org.mongolink.test.integrationMapping;
 
-import org.mongolink.domain.mapper.EntityMap;
+import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.test.entity.FakeEntityWithCap;
 
 
-public class FakeEntityMappingWithCap extends EntityMap<FakeEntityWithCap> {
+public class FakeAggregateMappingWithCap extends AggregateMap<FakeEntityWithCap> {
 
-    public FakeEntityMappingWithCap() {
+    public FakeAggregateMappingWithCap() {
         super(FakeEntityWithCap.class);
     }
 

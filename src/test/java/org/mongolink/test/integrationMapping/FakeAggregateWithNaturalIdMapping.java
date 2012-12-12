@@ -21,13 +21,13 @@
 
 package org.mongolink.test.integrationMapping;
 
-import org.mongolink.domain.mapper.EntityMap;
+import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.test.entity.FakeEntityWithNaturalId;
 
 
-public class FakeEntityWithNaturalIdMapping extends EntityMap<FakeEntityWithNaturalId> {
+public class FakeAggregateWithNaturalIdMapping extends AggregateMap<FakeEntityWithNaturalId> {
 
-    public FakeEntityWithNaturalIdMapping() {
+    public FakeAggregateWithNaturalIdMapping() {
         super(FakeEntityWithNaturalId.class);
     }
 

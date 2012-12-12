@@ -29,6 +29,7 @@ import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
@@ -145,6 +146,7 @@ public class TestsIntegration extends TestsWithMongo {
 
 
     @Test
+    @Ignore
     public void cappedCollectionDropItems() throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             BasicDBObject naturalIdEntity = new BasicDBObject();

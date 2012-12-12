@@ -22,7 +22,7 @@
 package org.mongolink.test.entity;
 
 
-public class FakeChildEntity extends FakeEntity {
+public class FakeChildAggregate extends FakeEntity {
 
     private String childName;
 

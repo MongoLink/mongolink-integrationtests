@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
 import org.mongolink.domain.mapper.ContextBuilder;
-import org.mongolink.test.entity.FakeChildEntity;
+import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.FakeEntityWithNaturalId;
 import org.mongolink.test.factory.TestFactory;
@@ -61,7 +61,7 @@ public class TestsIntegration extends TestsWithMongo {
         fakeChild.put("value", "parent value");
         fakeChild.put("comments", new BasicDBList());
         fakeChild.put("index", 0);
-        fakeChild.put("__discriminator", "FakeChildEntity");
+        fakeChild.put("__discriminator", "FakeChildAggregate");
 
         db.getCollection("fakeentity").insert(fakeEntity, fakeChild);
 
@@ -94,11 +94,11 @@ public class TestsIntegration extends TestsWithMongo {
 
     @Test
     public void canGetByNaturalId() {
-        FakeEntityWithNaturalId fakeEntityWithNaturalId = mongoSession.get("naturalkey",
+        FakeEntityWithNaturalId fakeAggregateWithNaturalId = mongoSession.get("naturalkey",
                 FakeEntityWithNaturalId.class);
 
-        assertThat(fakeEntityWithNaturalId, notNullValue());
-        assertThat(fakeEntityWithNaturalId.getNaturalKey(), is("naturalkey"));
+        assertThat(fakeAggregateWithNaturalId, notNullValue());
+        assertThat(fakeAggregateWithNaturalId.getNaturalKey(), is("naturalkey"));
     }
 
     @Test
@@ -121,7 +121,7 @@ public class TestsIntegration extends TestsWithMongo {
 
     @Test
     public void canGetChildEntity() {
-        FakeChildEntity entity = (FakeChildEntity) mongoSession.get("5d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        FakeChildAggregate entity = (FakeChildAggregate) mongoSession.get("5d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
 
         assertThat(entity, notNullValue());
         assertThat(entity.getValue(), is("parent value"));
@@ -130,14 +130,14 @@ public class TestsIntegration extends TestsWithMongo {
 
     @Test
     public void canSaveChildEntity() {
-        FakeChildEntity fakeChildEntity = new FakeChildEntity();
-        fakeChildEntity.setChildName("child");
-        fakeChildEntity.setValue("value from parent");
-        fakeChildEntity.addComment("this is a comment!");
+        FakeChildAggregate FakeChildAggregate = new FakeChildAggregate();
+        FakeChildAggregate.setChildName("child");
+        FakeChildAggregate.setValue("value from parent");
+        FakeChildAggregate.addComment("this is a comment!");
 
-        mongoSession.save(fakeChildEntity);
+        mongoSession.save(FakeChildAggregate);
 
-        FakeChildEntity entityFound = mongoSession.get(fakeChildEntity.getId(), FakeChildEntity.class);
+        FakeChildAggregate entityFound = mongoSession.get(FakeChildAggregate.getId(), FakeChildAggregate.class);
 
         assertThat(entityFound, notNullValue());
         assertThat(entityFound.getComments().size(), is(1));

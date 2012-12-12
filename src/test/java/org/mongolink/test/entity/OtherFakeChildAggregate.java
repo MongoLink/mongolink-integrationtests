@@ -22,5 +22,5 @@
 package org.mongolink.test.entity;
 
 
-public class OtherFakeChildEntity extends FakeEntity {
+public class OtherFakeChildAggregate extends FakeEntity {
 }

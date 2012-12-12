@@ -23,9 +23,9 @@ package org.mongolink.test.integrationMapping;
 
 import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.domain.mapper.SubclassMap;
-import org.mongolink.test.entity.FakeChildEntity;
+import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
-import org.mongolink.test.entity.OtherFakeChildEntity;
+import org.mongolink.test.entity.OtherFakeChildAggregate;
 
 
 public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity> {
@@ -41,14 +41,14 @@ public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity
         property(element().getIndex());
         collection(element().getComments());
         property(element().getComment());
-        subclass(new SubclassMap<FakeChildEntity>(FakeChildEntity.class) {
+        subclass(new SubclassMap<FakeChildAggregate>(FakeChildAggregate.class) {
 
             @Override
             protected void map() {
                 property(element().getChildName());
             }
         });
-        subclass(new SubclassMap<OtherFakeChildEntity>(OtherFakeChildEntity.class) {
+        subclass(new SubclassMap<OtherFakeChildAggregate>(OtherFakeChildAggregate.class) {
             @Override
             protected void map() {
 

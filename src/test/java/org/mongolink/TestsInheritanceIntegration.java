@@ -26,9 +26,9 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.test.entity.ChildComment;
-import org.mongolink.test.entity.FakeChildEntity;
+import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
-import org.mongolink.test.entity.OtherFakeChildEntity;
+import org.mongolink.test.entity.OtherFakeChildAggregate;
 
 import java.util.List;
 
@@ -45,8 +45,8 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
     @Test
     public void canGetAllEntityWithInheritance() {
-        mongoSession.save(new FakeChildEntity());
-        mongoSession.save(new OtherFakeChildEntity());
+        mongoSession.save(new FakeChildAggregate());
+        mongoSession.save(new OtherFakeChildAggregate());
         mongoSession.clear();
 
         List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
@@ -57,11 +57,11 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     @Test
     @Ignore
     public void canGetOnlyChildTypeOnGetAll() {
-        mongoSession.save(new FakeChildEntity());
-        mongoSession.save(new OtherFakeChildEntity());
+        mongoSession.save(new FakeChildAggregate());
+        mongoSession.save(new OtherFakeChildAggregate());
         mongoSession.clear();
 
-        List<FakeChildEntity> fakeEntities = mongoSession.getAll(FakeChildEntity.class);
+        List<FakeChildAggregate> fakeEntities = mongoSession.getAll(FakeChildAggregate.class);
 
         //failed, 2 entities return
         assertThat(fakeEntities.size(), is(1));
@@ -69,9 +69,9 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
     @Test
     public void canDealWithComponentInheritance() {
-        final FakeEntity fakeEntity = new FakeEntity("value");
-        fakeEntity.addComment(new ChildComment("jb"));
-        mongoSession.save(fakeEntity);
+        final FakeEntity fakeAggregate = new FakeEntity("value");
+        fakeAggregate.addComment(new ChildComment("jb"));
+        mongoSession.save(fakeAggregate);
 
         final List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
 

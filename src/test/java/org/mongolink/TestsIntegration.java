@@ -144,9 +144,7 @@ public class TestsIntegration extends TestsWithMongo {
         assertThat(entityFound.getComments().size(), is(1));
     }
 
-
     @Test
-    @Ignore
     public void cappedCollectionDropItems() throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             BasicDBObject naturalIdEntity = new BasicDBObject();

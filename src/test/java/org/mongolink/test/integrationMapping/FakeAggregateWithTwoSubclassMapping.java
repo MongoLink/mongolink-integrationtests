@@ -41,6 +41,7 @@ public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity
         property(element().getIndex());
         collection(element().getComments());
         property(element().getComment());
+        collection(element().getUuids());
         subclass(new SubclassMap<FakeChildAggregate>(FakeChildAggregate.class) {
 
             @Override

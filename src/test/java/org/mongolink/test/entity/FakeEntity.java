@@ -25,7 +25,6 @@ package org.mongolink.test.entity;
 import com.google.common.collect.Lists;
 
 import java.util.List;
-import java.util.UUID;
 
 public class FakeEntity {
 
@@ -85,9 +84,6 @@ public class FakeEntity {
         this.comment = comment;
     }
 
-    public List<UUID> getUuids() {
-        return uuids;
-    }
 
     private int index;
     private String id;
@@ -95,5 +91,4 @@ public class FakeEntity {
     private final List<Comment> comments = Lists.newArrayList();
     private FakeEntity otherEntity;
     private Comment comment;
-    private List<UUID> uuids = Lists.newArrayList();
 }

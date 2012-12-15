@@ -39,22 +39,23 @@ public class TestsWithMongo {
                 new ConfigProperties().addSettings(Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF)));
 
         mongoSession = sessionManager.createSession();
-        db = mongoSession.getDb();
     }
 
     @AfterClass
     public static void afterClass() {
-        dropCollections();
         sessionManager.close();
     }
 
     @Before
     public void parentBefore() {
+        mongoSession = sessionManager.createSession();
         mongoSession.start();
+        db = mongoSession.getDb();
     }
 
     @After
     public void parentAfter() {
+        dropCollections();
         mongoSession.stop();
     }
 

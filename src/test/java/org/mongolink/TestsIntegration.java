@@ -27,9 +27,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
@@ -78,12 +76,6 @@ public class TestsIntegration extends TestsWithMongo {
         initData();
     }
 
-    @After
-    public void after() {
-        db.getCollection("fakeentity").drop();
-
-    }
-
     @Test
     public void canGetById() {
         FakeEntity entityFound = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
@@ -107,6 +99,7 @@ public class TestsIntegration extends TestsWithMongo {
         ContextBuilder contextBuilder = TestFactory.contextBuilder().withFakeEntity();
         MongoSessionManager manager = MongoSessionManager.create(contextBuilder, new ConfigProperties().addSettings(Settings.defaultInstance()));
         MongoSession session = manager.createSession();
+        session.start();
         session.save(new FakeEntity("new fake entity"));
     }
 
@@ -142,19 +135,6 @@ public class TestsIntegration extends TestsWithMongo {
 
         assertThat(entityFound, notNullValue());
         assertThat(entityFound.getComments().size(), is(1));
-    }
-
-    @Test
-    public void cappedCollectionDropItems() throws InterruptedException {
-        for (int i = 0; i < 100; i++) {
-            BasicDBObject naturalIdEntity = new BasicDBObject();
-            naturalIdEntity.put("_id", "cappedid" + i);
-            naturalIdEntity.put("value", "cappedvalue" + i);
-            db.getCollection("fakeentitywithcap").insert(naturalIdEntity);
-        }
-
-        assertThat(db.getCollection("fakeentitywithcap").isCapped(), is(true));
-        assertThat(db.getCollection("fakeentitywithcap").count(), is(50L));
     }
 
     @Test
@@ -204,6 +184,7 @@ public class TestsIntegration extends TestsWithMongo {
 		mongoSession.stop();
 
 		mongoSession = sessionManager.createSession();
+        mongoSession.start();
         final FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
         assertThat(entityFound.getComments().size(), is(1));
 		assertThat(entityFound.getComments().get(0).getValue(), is("a comment"));

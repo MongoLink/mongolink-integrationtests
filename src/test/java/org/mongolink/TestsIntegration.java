@@ -190,4 +190,15 @@ public class TestsIntegration extends TestsWithMongo {
 		assertThat(entityFound.getComments().get(0).getValue(), is("a comment"));
     }
 
+    @Test
+    public void canSaveComponentsInListWithoutDuplicateThemInChildClass() {
+        FakeEntity fake = new FakeChildAggregate();
+        fake.addComment("a comment");
+        mongoSession.save(fake);
+
+        mongoSession = sessionManager.createSession();
+        mongoSession.start();
+        FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
+        assertThat(entityFound.getComments().size(), is(1));
+    }
 }

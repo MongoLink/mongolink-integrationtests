@@ -28,6 +28,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.domain.criteria.Criteria;
 import org.mongolink.domain.criteria.Restrictions;
@@ -35,6 +36,7 @@ import org.mongolink.domain.mapper.ContextBuilder;
 import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.FakeEntityWithNaturalId;
+import org.mongolink.test.entity.OtherFakeChildAggregate;
 import org.mongolink.test.factory.TestFactory;
 
 import java.util.List;
@@ -201,4 +203,20 @@ public class TestsIntegration extends TestsWithMongo {
         FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
         assertThat(entityFound.getComments().size(), is(1));
     }
+
+    @Test
+    @Ignore
+    public void canGetOnlyChildTypeOnGetAll() {
+        mongoSession.save(new FakeChildAggregate());
+        mongoSession.save(new OtherFakeChildAggregate());
+        mongoSession.clear();
+
+        mongoSession = sessionManager.createSession();
+        mongoSession.start();
+        List<FakeChildAggregate> fakeEntities = mongoSession.getAll(FakeChildAggregate.class);
+
+        //failed, 2 entities return (enfin 4, mais c'est à cause du before)
+        assertThat(fakeEntities.size(), is(1));
+    }
+
 }

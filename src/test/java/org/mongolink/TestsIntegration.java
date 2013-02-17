@@ -28,21 +28,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mongolink.domain.criteria.Criteria;
-import org.mongolink.domain.criteria.Restrictions;
-import org.mongolink.domain.mapper.ContextBuilder;
 import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.FakeEntityWithNaturalId;
-import org.mongolink.test.entity.OtherFakeChildAggregate;
-import org.mongolink.test.factory.TestFactory;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.fest.assertions.Assertions.assertThat;
 
 
 @SuppressWarnings("unchecked")
@@ -82,9 +73,9 @@ public class TestsIntegration extends TestsWithMongo {
     public void canGetById() {
         FakeEntity entityFound = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
 
-        assertThat(entityFound, notNullValue());
-        assertThat(entityFound.getId(), is("4d9d9b5e36a9a4265ea9ecbe"));
-        assertThat(entityFound.getValue(), is("fake entity value"));
+        assertThat(entityFound).isNotNull();
+        assertThat(entityFound.getId()).isEqualTo("4d9d9b5e36a9a4265ea9ecbe");
+        assertThat(entityFound.getValue()).isEqualTo("fake entity value");
     }
 
     @Test
@@ -92,17 +83,8 @@ public class TestsIntegration extends TestsWithMongo {
         FakeEntityWithNaturalId fakeAggregateWithNaturalId = mongoSession.get("naturalkey",
                 FakeEntityWithNaturalId.class);
 
-        assertThat(fakeAggregateWithNaturalId, notNullValue());
-        assertThat(fakeAggregateWithNaturalId.getNaturalKey(), is("naturalkey"));
-    }
-
-    @Test
-    public void canUseSessionManager() {
-        ContextBuilder contextBuilder = TestFactory.contextBuilder().withFakeEntity();
-        MongoSessionManager manager = MongoSessionManager.create(contextBuilder, new ConfigProperties().addSettings(Settings.defaultInstance()));
-        MongoSession session = manager.createSession();
-        session.start();
-        session.save(new FakeEntity("new fake entity"));
+        assertThat(fakeAggregateWithNaturalId).isNotNull();
+        assertThat(fakeAggregateWithNaturalId.getNaturalKey()).isEqualTo("naturalkey");
     }
 
     @Test
@@ -112,16 +94,16 @@ public class TestsIntegration extends TestsWithMongo {
 
         testid.insert(Lists.<DBObject>newArrayList(dbo));
 
-        assertThat(dbo.get("_id"), notNullValue());
+        assertThat(dbo.get("_id")).isNotNull();
     }
 
     @Test
     public void canGetChildEntity() {
         FakeChildAggregate entity = (FakeChildAggregate) mongoSession.get("5d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
 
-        assertThat(entity, notNullValue());
-        assertThat(entity.getValue(), is("parent value"));
-        assertThat(entity.getChildName(), is("child value"));
+        assertThat(entity).isNotNull();
+        assertThat(entity.getValue()).isEqualTo("parent value");
+        assertThat(entity.getChildName()).isEqualTo("child value");
     }
 
     @Test
@@ -135,88 +117,16 @@ public class TestsIntegration extends TestsWithMongo {
 
         FakeChildAggregate entityFound = mongoSession.get(FakeChildAggregate.getId(), FakeChildAggregate.class);
 
-        assertThat(entityFound, notNullValue());
-        assertThat(entityFound.getComments().size(), is(1));
-    }
-
-    @Test
-    public void canLimitSearch() {
-        for (int i = 0; i < 10; i++) {
-            mongoSession.save(new FakeEntity("valeur"));
-        }
-        final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
-        criteria.add(Restrictions.equals("value", "valeur"));
-        criteria.limit(1);
-
-        final List result = criteria.list();
-
-        assertThat(result.size(), is(1));
-    }
-
-    @Test
-    public void canSkipSearch() {
-        for (int i = 0; i < 10; i++) {
-            mongoSession.save(new FakeEntity("valeur"));
-        }
-        final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
-        criteria.add(Restrictions.equals("value", "valeur"));
-        criteria.skip(1);
-
-        final List result = criteria.list();
-
-        assertThat(result.size(), is(9));
+        assertThat(entityFound).isNotNull();
+        assertThat(entityFound.getComments()).hasSize(1);
     }
 
     @Test
     public void canPopulateComponent() {
         final FakeEntity entity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
 
-        assertThat(entity.getComment(), notNullValue());
-        assertThat(entity.getComment().getValue(), is("the comment"));
-    }
-
-    @Test
-    public void canRemoveAnElementFromList() {
-        FakeEntity fake = new FakeEntity("test");
-        fake.addComment("a comment");
-		fake.addComment("another comment");
-        mongoSession.save(fake);
-
-		fake.getComments().remove(1);
-		mongoSession.stop();
-
-		mongoSession = sessionManager.createSession();
-        mongoSession.start();
-        final FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
-        assertThat(entityFound.getComments().size(), is(1));
-		assertThat(entityFound.getComments().get(0).getValue(), is("a comment"));
-    }
-
-    @Test
-    public void canSaveComponentsInListWithoutDuplicateThemInChildClass() {
-        FakeEntity fake = new FakeChildAggregate();
-        fake.addComment("a comment");
-        mongoSession.save(fake);
-
-        mongoSession = sessionManager.createSession();
-        mongoSession.start();
-        FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
-        assertThat(entityFound.getComments().size(), is(1));
-    }
-
-    @Test
-    @Ignore
-    public void canGetOnlyChildTypeOnGetAll() {
-        mongoSession.save(new FakeChildAggregate());
-        mongoSession.save(new OtherFakeChildAggregate());
-        mongoSession.clear();
-
-        mongoSession = sessionManager.createSession();
-        mongoSession.start();
-        List<FakeChildAggregate> fakeEntities = mongoSession.getAll(FakeChildAggregate.class);
-
-        //failed, 2 entities return (enfin 4, mais c'est à cause du before)
-        assertThat(fakeEntities.size(), is(1));
+        assertThat(entity.getComment()).isNotNull();
+        assertThat(entity.getComment().getValue()).isEqualTo("the comment");
     }
 
 }

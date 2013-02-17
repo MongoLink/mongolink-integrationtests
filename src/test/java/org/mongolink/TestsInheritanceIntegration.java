@@ -25,15 +25,11 @@ package org.mongolink;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mongolink.test.entity.ChildComment;
-import org.mongolink.test.entity.FakeChildAggregate;
-import org.mongolink.test.entity.FakeEntity;
-import org.mongolink.test.entity.OtherFakeChildAggregate;
+import org.mongolink.test.entity.*;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class TestsInheritanceIntegration extends TestsWithMongo {
 
@@ -51,7 +47,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
 
-        assertThat(fakeEntities.size(), is(2));
+        assertThat(fakeEntities).hasSize(2);
     }
 
     @Test
@@ -63,8 +59,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         List<FakeChildAggregate> fakeEntities = mongoSession.getAll(FakeChildAggregate.class);
 
-        //failed, 2 entities return
-        assertThat(fakeEntities.size(), is(1));
+        assertThat(fakeEntities).hasSize(1);
     }
 
     @Test
@@ -75,8 +70,8 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         final List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
 
-        assertThat(fakeEntities.size(), is(1));
-        assertThat(fakeEntities.get(0).getComments().size(), is(1));
-        assertThat(fakeEntities.get(0).getComments().get(0), instanceOf(ChildComment.class));
+        assertThat(fakeEntities).hasSize(1);
+        assertThat(fakeEntities.get(0).getComments()).hasSize(1);
+        assertThat(fakeEntities.get(0).getComments().get(0)).isInstanceOf(ChildComment.class);
     }
 }

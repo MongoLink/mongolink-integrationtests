@@ -23,13 +23,15 @@ package org.mongolink;
 
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mongolink.test.entity.*;
+import org.mongolink.test.entity.ChildComment;
+import org.mongolink.test.entity.FakeChildAggregate;
+import org.mongolink.test.entity.FakeEntity;
+import org.mongolink.test.entity.OtherFakeChildAggregate;
 
 import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Assertions.*;
 
 public class TestsInheritanceIntegration extends TestsWithMongo {
 
@@ -51,7 +53,6 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     }
 
     @Test
-    @Ignore
     public void canGetOnlyChildTypeOnGetAll() {
         mongoSession.save(new FakeChildAggregate());
         mongoSession.save(new OtherFakeChildAggregate());

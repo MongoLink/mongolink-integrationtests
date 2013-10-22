@@ -23,8 +23,6 @@ package org.mongolink.test.integrationMapping;
 
 import org.mongolink.domain.mapper.AggregateMap;
 import org.mongolink.domain.mapper.SubclassMap;
-import org.mongolink.test.entity.FakeChildAggregate;
-import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.complexInheritance.FakeParentEntity;
 import org.mongolink.test.entity.complexInheritance.FakeParentEntityChild;
 import org.mongolink.test.entity.complexInheritance.FakeParentEntityChildChild;
@@ -42,11 +40,11 @@ public class FakeAggregateWithManySubclassMapping extends AggregateMap<FakeParen
         subclass(new SubclassMap<FakeParentEntityChild>(FakeParentEntityChild.class) {
 
             @Override
-            protected void map() {
+            public void map() {
                 subclass(new SubclassMap<FakeParentEntityChildChild>(FakeParentEntityChildChild.class) {
                     @Override
-                    protected void map() {
-                        property(element().getName());
+                    public void map() {
+                        property().onProperty(element().getName());
                     }
                 });
             }

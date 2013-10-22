@@ -10,7 +10,7 @@ public class AggregateWithIntIdMapping extends AggregateMap<EntityWithIdInt> {
     }
 
     @Override
-    protected void map() {
-        id(element().getId()).natural();
+    public void map() {
+        id().onField("id").natural();
     }
 }

@@ -34,12 +34,12 @@ public class CommentMapping extends ComponentMap<Comment> {
     }
 
     @Override
-    protected void map() {
+    public void map() {
         property(element().getValue());
         subclass(new SubclassMap<ChildComment>(ChildComment.class) {
             @Override
-            protected void map() {
-                property(element().getName());
+            public void map() {
+                property().onProperty(element().getName());
             }
         });
     }

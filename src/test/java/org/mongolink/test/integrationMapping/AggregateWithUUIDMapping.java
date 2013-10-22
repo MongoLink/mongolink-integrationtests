@@ -10,7 +10,7 @@ public class AggregateWithUUIDMapping extends AggregateMap<EntityWithUUID> {
     }
 
     @Override
-    protected void map() {
-        id(element().getId()).natural();
+    public void map() {
+        id().onProperty(element().getId()).natural();
     }
 }

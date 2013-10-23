@@ -7,7 +7,7 @@
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.16</version>
+    <version>0.0.17-SNAPSHOT</version>
     <artifactId>mongolink-integrationtests</artifactId>
     <scm>
         <developerConnection>scm:git:git@github.com:MongoLink/mongolink-integrationtests.git</developerConnection>

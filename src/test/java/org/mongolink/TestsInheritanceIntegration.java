@@ -23,12 +23,12 @@ package org.mongolink;
 
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mongolink.test.entity.ChildComment;
 import org.mongolink.test.entity.FakeChildAggregate;
 import org.mongolink.test.entity.FakeEntity;
 import org.mongolink.test.entity.OtherFakeChildAggregate;
+import org.mongolink.test.entity.complexInheritance.FakeParentEntity;
 import org.mongolink.test.entity.complexInheritance.FakeParentEntityChild;
 import org.mongolink.test.entity.complexInheritance.FakeParentEntityChildChild;
 
@@ -80,8 +80,8 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     }
 
     @Test
-    @Ignore
     public void canGetAChildInstanceOnGetAll() {
+        mongoSession.save(new FakeParentEntity());
         mongoSession.save(new FakeParentEntityChildChild());
         mongoSession.clear();
 
@@ -89,5 +89,18 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
 
         assertThat(fakeEntities).hasSize(1);
         assertThat(fakeEntities.get(0)).isInstanceOf(FakeParentEntityChildChild.class);
+    }
+
+    @Test
+    public void canGetAllChildInstance() {
+        mongoSession.save(new FakeParentEntity());
+        mongoSession.save(new FakeParentEntityChildChild());
+        mongoSession.clear();
+
+        List<FakeParentEntity> fakeEntities = mongoSession.getAll(FakeParentEntity.class);
+
+        assertThat(fakeEntities).hasSize(2);
+        assertThat(fakeEntities.get(0)).isInstanceOf(FakeParentEntity.class);
+        assertThat(fakeEntities.get(1)).isInstanceOf(FakeParentEntityChildChild.class);
     }
 }

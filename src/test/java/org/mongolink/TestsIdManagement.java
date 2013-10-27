@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 
 public class TestsIdManagement extends TestsWithMongo {
 
-
     @Test
     public void canUseUUID() {
         final EntityWithUUID entity = new EntityWithUUID();
@@ -33,4 +32,5 @@ public class TestsIdManagement extends TestsWithMongo {
         final EntityWithIdInt entityFound = mongoSession.get(3, EntityWithIdInt.class);
         assertThat(entityFound.getId(), is(3));
     }
+
 }

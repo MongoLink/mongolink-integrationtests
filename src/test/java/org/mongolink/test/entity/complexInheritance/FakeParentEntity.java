@@ -24,7 +24,7 @@ package org.mongolink.test.entity.complexInheritance;
 
 public class FakeParentEntity {
 
-    FakeParentEntity() {
+    public FakeParentEntity() {
 
     }
 

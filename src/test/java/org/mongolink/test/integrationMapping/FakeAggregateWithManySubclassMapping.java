@@ -30,18 +30,14 @@ import org.mongolink.test.entity.complexInheritance.FakeParentEntityChildChild;
 
 public class FakeAggregateWithManySubclassMapping extends AggregateMap<FakeParentEntity> {
 
-    public FakeAggregateWithManySubclassMapping() {
-        super(FakeParentEntity.class);
-    }
-
     @Override
     public void map() {
-        id(element().getId());
-        subclass(new SubclassMap<FakeParentEntityChild>(FakeParentEntityChild.class) {
+        id().onProperty(element().getId());
+        subclass(new SubclassMap<FakeParentEntityChild>() {
 
             @Override
             public void map() {
-                subclass(new SubclassMap<FakeParentEntityChildChild>(FakeParentEntityChildChild.class) {
+                subclass(new SubclassMap<FakeParentEntityChildChild>() {
                     @Override
                     public void map() {
                         property().onProperty(element().getName());

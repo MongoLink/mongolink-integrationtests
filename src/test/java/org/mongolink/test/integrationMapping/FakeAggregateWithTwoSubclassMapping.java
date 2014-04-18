@@ -30,10 +30,6 @@ import org.mongolink.test.entity.OtherFakeChildAggregate;
 
 public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity> {
 
-    public FakeAggregateWithTwoSubclassMapping() {
-        super(FakeEntity.class);
-    }
-
     @Override
     public void map() {
         id().onProperty(element().getId());
@@ -41,14 +37,14 @@ public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity
         property().onProperty(element().getIndex());
         collection().onProperty(element().getComments());
         property().onProperty(element().getComment());
-        subclass(new SubclassMap<FakeChildAggregate>(FakeChildAggregate.class) {
+        subclass(new SubclassMap<FakeChildAggregate>() {
 
             @Override
             public void map() {
                 property().onProperty(element().getChildName());
             }
         });
-        subclass(new SubclassMap<OtherFakeChildAggregate>(OtherFakeChildAggregate.class) {
+        subclass(new SubclassMap<OtherFakeChildAggregate>() {
             @Override
             public void map() {
 

@@ -27,10 +27,6 @@ import org.mongolink.test.entity.FakeEntityWithCap;
 
 public class FakeAggregateMappingWithCap extends AggregateMap<FakeEntityWithCap> {
 
-    public FakeAggregateMappingWithCap() {
-        super(FakeEntityWithCap.class);
-    }
-
     @Override
     public void map() {
         setCapped(1048076, 50);

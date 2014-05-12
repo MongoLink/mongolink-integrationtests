@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.mongolink.domain.UpdateStrategies;
+import org.mongolink.domain.session.MongoSessionImpl;
 import org.mongolink.domain.mapper.ContextBuilder;
 
 public class TestsWithMongo {
@@ -69,7 +69,7 @@ public class TestsWithMongo {
 
 
     protected static MongoSessionManager sessionManager;
-    protected static MongoSession mongoSession;
+    protected static MongoSessionImpl mongoSession;
     protected static DB db;
 
 }

@@ -22,15 +22,11 @@
 package org.mongolink;
 
 
+import org.fest.assertions.Condition;
 import org.junit.After;
 import org.junit.Test;
-import org.mongolink.test.entity.ChildComment;
-import org.mongolink.test.entity.FakeChildAggregate;
-import org.mongolink.test.entity.FakeEntity;
-import org.mongolink.test.entity.OtherFakeChildAggregate;
-import org.mongolink.test.entity.complexInheritance.FakeParentEntity;
-import org.mongolink.test.entity.complexInheritance.FakeParentEntityChild;
-import org.mongolink.test.entity.complexInheritance.FakeParentEntityChildChild;
+import org.mongolink.test.entity.*;
+import org.mongolink.test.entity.complexInheritance.*;
 
 import java.util.List;
 
@@ -48,7 +44,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     public void canGetAllEntityWithInheritance() {
         mongoSession.save(new FakeChildAggregate());
         mongoSession.save(new OtherFakeChildAggregate());
-        mongoSession.clear();
+        flushAndClear();
 
         List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
 
@@ -59,7 +55,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     public void canGetOnlyChildTypeOnGetAll() {
         mongoSession.save(new FakeChildAggregate());
         mongoSession.save(new OtherFakeChildAggregate());
-        mongoSession.clear();
+        flushAndClear();
 
         List<FakeChildAggregate> fakeEntities = mongoSession.getAll(FakeChildAggregate.class);
 
@@ -71,6 +67,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
         final FakeEntity fakeAggregate = new FakeEntity("value");
         fakeAggregate.addComment(new ChildComment("jb"));
         mongoSession.save(fakeAggregate);
+        mongoSession.flush();
 
         final List<FakeEntity> fakeEntities = mongoSession.getAll(FakeEntity.class);
 
@@ -83,7 +80,7 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     public void canGetAChildInstanceOnGetAll() {
         mongoSession.save(new FakeParentEntity());
         mongoSession.save(new FakeParentEntityChildChild());
-        mongoSession.clear();
+        flushAndClear();
 
         List<FakeParentEntityChild> fakeEntities = mongoSession.getAll(FakeParentEntityChild.class);
 
@@ -95,12 +92,35 @@ public class TestsInheritanceIntegration extends TestsWithMongo {
     public void canGetAllChildInstance() {
         mongoSession.save(new FakeParentEntity());
         mongoSession.save(new FakeParentEntityChildChild());
-        mongoSession.clear();
+        flushAndClear();
 
         List<FakeParentEntity> fakeEntities = mongoSession.getAll(FakeParentEntity.class);
 
         assertThat(fakeEntities).hasSize(2);
-        assertThat(fakeEntities.get(0)).isInstanceOf(FakeParentEntity.class);
-        assertThat(fakeEntities.get(1)).isInstanceOf(FakeParentEntityChildChild.class);
+        assertThat(fakeEntities).satisfies(containsInstanceOfType(FakeParentEntity.class));
+        assertThat(fakeEntities).satisfies(containsInstanceOfType(FakeParentEntityChildChild.class));
+    }
+
+    private  ContainsInstanceOfType containsInstanceOfType(Class<?> type) {
+        return new ContainsInstanceOfType(type);
+    }
+
+    private void flushAndClear() {
+        mongoSession.flush();
+        mongoSession.clear();
+    }
+
+    private class ContainsInstanceOfType extends Condition<List<?>> {
+
+        private ContainsInstanceOfType(Class<?> type) {
+            this.type = type;
+        }
+
+        @Override
+        public boolean matches(List<?> liste) {
+            return liste.stream().anyMatch(e -> e.getClass().equals(type));
+        }
+
+        private final Class<?> type;
     }
 }

@@ -28,5 +28,6 @@ public class TestsEquality extends TestsWithMongo {
     private void givenAnEntity() {
         final FakeEntity entity = new FakeEntity("fake entity value");
         mongoSession.save(entity);
+        mongoSession.flush();
     }
 }

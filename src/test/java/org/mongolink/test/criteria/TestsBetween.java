@@ -40,5 +40,6 @@ public class TestsBetween extends TestsWithMongo {
         final FakeEntity value = new FakeEntity("value");
         value.setIndex(index);
         mongoSession.save(value);
+        mongoSession.flush();
     }
 }

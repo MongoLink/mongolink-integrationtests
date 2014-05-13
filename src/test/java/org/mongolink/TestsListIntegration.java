@@ -33,6 +33,7 @@ public class TestsListIntegration extends TestsWithMongo {
         fake.addComment("a comment");
         fake.addComment("another comment");
         mongoSession.save(fake);
+        mongoSession.flush();
 
         fake.getComments().remove(1);
         mongoSession.stop();
@@ -49,6 +50,7 @@ public class TestsListIntegration extends TestsWithMongo {
         FakeEntity fake = new FakeChildAggregate();
         fake.addComment("a comment");
         mongoSession.save(fake);
+        mongoSession.flush();
 
         mongoSession = sessionManager.createSession();
         mongoSession.start();

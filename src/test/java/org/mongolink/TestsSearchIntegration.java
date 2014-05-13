@@ -37,6 +37,7 @@ public class TestsSearchIntegration extends TestsWithMongo {
         for (int i = 0; i < 10; i++) {
             mongoSession.save(new FakeEntity("valeur"));
         }
+        mongoSession.flush();
         final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
         criteria.add(Restrictions.equals("value", "valeur"));
         criteria.limit(1);
@@ -51,6 +52,7 @@ public class TestsSearchIntegration extends TestsWithMongo {
         for (int i = 0; i < 10; i++) {
             mongoSession.save(new FakeEntity("valeur"));
         }
+        mongoSession.flush();
         final Criteria criteria = mongoSession.createCriteria(FakeEntity.class);
         criteria.add(Restrictions.equals("value", "valeur"));
         criteria.skip(1);

@@ -30,5 +30,6 @@ public class TestsElemMatch extends TestsWithMongo {
         final FakeEntity entity = new FakeEntity("value");
         entity.addComment(comment);
         mongoSession.save(entity);
+        mongoSession.flush();
     }
 }

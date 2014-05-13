@@ -14,6 +14,7 @@ public class TestsIdManagement extends TestsWithMongo {
         final EntityWithUUID entity = new EntityWithUUID();
         mongoSession.save(entity);
         mongoSession.save(new EntityWithUUID());
+        mongoSession.flush();
         mongoSession.clear();
 
         final EntityWithUUID entityFound = mongoSession.get(entity.getId(), EntityWithUUID.class);
@@ -27,6 +28,7 @@ public class TestsIdManagement extends TestsWithMongo {
         final EntityWithIdInt entity = new EntityWithIdInt(3);
         mongoSession.save(entity);
         mongoSession.save(new EntityWithIdInt(2));
+        mongoSession.flush();
         mongoSession.clear();
 
         final EntityWithIdInt entityFound = mongoSession.get(3, EntityWithIdInt.class);

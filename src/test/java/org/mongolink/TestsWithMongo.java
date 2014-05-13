@@ -38,7 +38,7 @@ public class TestsWithMongo {
         sessionManager = MongoSessionManager.create(builder,
                 new ConfigProperties().addSettings(Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF)));
 
-        mongoSession = sessionManager.createSession();
+        mongoSession = (MongoSessionImpl) sessionManager.createSession();
     }
 
     @AfterClass
@@ -48,7 +48,7 @@ public class TestsWithMongo {
 
     @Before
     public void parentBefore() {
-        mongoSession = sessionManager.createSession();
+        mongoSession = (MongoSessionImpl) sessionManager.createSession();
         mongoSession.start();
         db = mongoSession.getDb();
     }

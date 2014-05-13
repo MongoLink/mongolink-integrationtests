@@ -38,7 +38,7 @@ public class TestsListIntegration extends TestsWithMongo {
         fake.getComments().remove(1);
         mongoSession.stop();
 
-        mongoSession = sessionManager.createSession();
+        mongoSession = (org.mongolink.domain.session.MongoSessionImpl) sessionManager.createSession();
         mongoSession.start();
         final FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
         assertThat(entityFound.getComments()).hasSize(1);
@@ -52,7 +52,7 @@ public class TestsListIntegration extends TestsWithMongo {
         mongoSession.save(fake);
         mongoSession.flush();
 
-        mongoSession = sessionManager.createSession();
+        mongoSession = (org.mongolink.domain.session.MongoSessionImpl) sessionManager.createSession();
         mongoSession.start();
         FakeEntity entityFound = mongoSession.get(fake.getId(), FakeEntity.class);
         assertThat(entityFound.getComments()).hasSize(1);

@@ -1,9 +1,10 @@
-MongoLink
+MongoLink - Integration Tests
 ========
 
-An objet mapper for com.mongodb, without any annotation or xml. We can then achieve true persistence ignorance, allowing us to practice domain-driven design freely.
+Integration testing for MongoLink
 
-[![Build Status](https://mongolink.ci.cloudbees.com/job/mongolink-integrationtests/badge/icon)](https://mongolink.ci.cloudbees.com/job/mongolink-integrationtests/)
+
+[![Build Status](https://travis-ci.org/MongoLink/mongolink-integrationtests.svg)](https://travis-ci.org/MongoLink/mongolink-integrationtests)
 
 Website
 -------
@@ -12,7 +13,7 @@ Website
 
 Continuous integration
 ---------------------
-* Jenkins : https://mongolink.ci.cloudbees.com
+* Travis : https://travis-ci.org/MongoLink/mongolink-integrationtests
 * Twitter : https://twitter.com/MongoLink_ci
 
 Maven repositories

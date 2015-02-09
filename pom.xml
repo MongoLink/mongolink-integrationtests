@@ -20,18 +20,6 @@
         <db.password />
         <db.name>test</db.name>
     </properties>
-    <profiles>
-        <profile>
-            <id>itg</id>
-            <properties>
-                <db.host>flame.mongohq.com</db.host>
-                <db.port>27020</db.port>
-                <db.user>ic</db.user>
-                <db.password>ic</db.password>
-                <db.name>mongolink</db.name>
-            </properties>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.mongolink</groupId>

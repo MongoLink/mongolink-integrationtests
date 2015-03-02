@@ -3,8 +3,7 @@ package org.mongolink;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.mongolink.test.entity.Comment;
 import org.mongolink.test.entity.FakeEntity;
 
@@ -50,6 +49,20 @@ public class TestsDiffStrategy extends TestsWithMongo {
     @Test
     public void canRemoveElementAtArbitraryIndex() {
         FakeEntity fakeEntity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        fakeEntity.getComments().remove(2);
+
+        mongoSession.flush();
+        mongoSession.clear();
+
+        FakeEntity entityReloaded = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        assertThat(entityReloaded.getComments()).hasSize(3);
+        assertThat(entityReloaded.getComments()).onProperty("value").contains("test1", "test3");
+    }
+
+    @Test
+    @Ignore("TODO: implements identifiers")
+    public void canTakeIntoAccountListIdentifier() {
+        FakeEntity fakeEntity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
         fakeEntity.getComments().set(0, new Comment("other value"));
         fakeEntity.getComments().remove(2);
 
@@ -86,6 +99,20 @@ public class TestsDiffStrategy extends TestsWithMongo {
         FakeEntity entityReloaded = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
         assertThat(entityReloaded.getComments()).hasSize(5);
         assertThat(entityReloaded.getComments()).onProperty("value").contains("test0", "test1", "test2", "test3", "test4");
+    }
+
+    @Test
+    public void canRemoveAndAddAtTheSameTime() {
+        FakeEntity fakeEntity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        fakeEntity.getComments().remove(3);
+        fakeEntity.getComments().add(new Comment("test4"));
+
+        mongoSession.flush();
+        mongoSession.clear();
+
+        FakeEntity entityReloaded = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        assertThat(entityReloaded.getComments()).hasSize(4);
+        assertThat(entityReloaded.getComments()).onProperty("value").contains("test0", "test1", "test2", "test4");
 
     }
 }

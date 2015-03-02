@@ -23,6 +23,10 @@ package org.mongolink.test.entity;
 
 
 public class Comment {
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     private String value;
 
     public Comment() {

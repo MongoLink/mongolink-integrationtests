@@ -47,6 +47,20 @@ public class TestsDiffStrategy extends TestsWithMongo {
     }
 
     @Test
+    public void canModifiySubproperty() {
+        FakeEntity fakeEntity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        fakeEntity.getComments().get(0).setValue("test");
+
+        mongoSession.flush();
+        mongoSession.clear();
+
+        FakeEntity entityReloaded = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
+        assertThat(entityReloaded.getComments()).hasSize(4);
+        assertThat(entityReloaded.getComments().get(0).getValue()).isEqualTo("test");
+    }
+
+
+    @Test
     public void canRemoveElementAtArbitraryIndex() {
         FakeEntity fakeEntity = mongoSession.get("4d9d9b5e36a9a4265ea9ecbe", FakeEntity.class);
         fakeEntity.getComments().remove(2);

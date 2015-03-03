@@ -29,7 +29,7 @@ public class FakeAggregateWithNaturalIdMapping extends AggregateMap<FakeEntityWi
 
     @Override
     public void map() {
-        id().onProperty(element().getNaturalKey()).natural();
-        property().onProperty(element().getValue());
+        id().onProperty(e -> e.getNaturalKey()).natural();
+        property().onProperty(e -> e.getValue());
     }
 }

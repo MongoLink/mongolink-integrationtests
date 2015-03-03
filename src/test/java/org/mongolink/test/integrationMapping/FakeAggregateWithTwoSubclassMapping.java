@@ -32,16 +32,16 @@ public class FakeAggregateWithTwoSubclassMapping extends AggregateMap<FakeEntity
 
     @Override
     public void map() {
-        id().onProperty(element().getId());
-        property().onProperty(element().getValue());
-        property().onProperty(element().getIndex());
-        collection().onProperty(element().getComments());
-        property().onProperty(element().getComment());
+        id().onProperty(e -> e.getId());
+        property().onProperty(e -> e.getValue());
+        property().onProperty(e -> e.getIndex());
+        collection().onProperty(e -> e.getComments());
+        property().onProperty(e -> e.getComment());
         subclass(new SubclassMap<FakeChildAggregate>() {
 
             @Override
             public void map() {
-                property().onProperty(element().getChildName());
+                property().onProperty(e -> e.getChildName());
             }
         });
         subclass(new SubclassMap<OtherFakeChildAggregate>() {

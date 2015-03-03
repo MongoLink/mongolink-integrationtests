@@ -32,7 +32,7 @@ public class FakeAggregateWithManySubclassMapping extends AggregateMap<FakeParen
 
     @Override
     public void map() {
-        id().onProperty(element().getId());
+        id().onProperty(e -> e.getId());
         subclass(new SubclassMap<FakeParentEntityChild>() {
 
             @Override
@@ -40,7 +40,7 @@ public class FakeAggregateWithManySubclassMapping extends AggregateMap<FakeParen
                 subclass(new SubclassMap<FakeParentEntityChildChild>() {
                     @Override
                     public void map() {
-                        property().onProperty(element().getName());
+                        property().onProperty(e -> e.getName());
                     }
                 });
             }

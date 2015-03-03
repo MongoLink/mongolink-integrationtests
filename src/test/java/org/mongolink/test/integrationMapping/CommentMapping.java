@@ -31,11 +31,11 @@ public class CommentMapping extends ComponentMap<Comment> {
 
     @Override
     public void map() {
-        property().onProperty(element().getValue());
+        property().onProperty(e -> e.getValue());
         subclass(new SubclassMap<ChildComment>() {
             @Override
             public void map() {
-                property().onProperty(element().getName());
+                property().onProperty(e -> e.getName());
             }
         });
     }

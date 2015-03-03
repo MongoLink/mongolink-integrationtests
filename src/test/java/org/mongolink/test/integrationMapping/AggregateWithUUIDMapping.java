@@ -7,6 +7,6 @@ public class AggregateWithUUIDMapping extends AggregateMap<EntityWithUUID> {
 
     @Override
     public void map() {
-        id().onProperty(element().getId()).natural();
+        id().onProperty(e -> e.getId()).natural();
     }
 }

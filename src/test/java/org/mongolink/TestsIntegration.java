@@ -23,31 +23,27 @@ package org.mongolink;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
-import org.mongolink.test.entity.FakeChildAggregate;
-import org.mongolink.test.entity.FakeEntity;
-import org.mongolink.test.entity.FakeEntityWithNaturalId;
+import org.junit.*;
+import org.mongolink.test.entity.*;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.Assertions.*;
 
 
 @SuppressWarnings("unchecked")
 public class TestsIntegration extends TestsWithMongo {
 
     private void initData() {
-        BasicDBObject fakeEntity = new BasicDBObject();
+        Document fakeEntity = new Document();
         fakeEntity.put("_id", new ObjectId("4d9d9b5e36a9a4265ea9ecbe"));
         fakeEntity.put("value", "fake entity value");
         fakeEntity.put("comments", new BasicDBList());
         fakeEntity.put("index", 42);
-        fakeEntity.put("comment", new BasicDBObject("value", "the comment"));
+        fakeEntity.put("comment", new Document("value", "the comment"));
 
-        BasicDBObject fakeChild = new BasicDBObject();
+        Document fakeChild = new Document();
         fakeChild.put("_id", new ObjectId("5d9d9b5e36a9a4265ea9ecbe"));
         fakeChild.put("childName", "child value");
         fakeChild.put("value", "parent value");
@@ -55,13 +51,13 @@ public class TestsIntegration extends TestsWithMongo {
         fakeChild.put("index", 0);
         fakeChild.put("__discriminator", "FakeChildAggregate");
 
-        db.getCollection("fakeentity").insert(fakeEntity, fakeChild);
+        db.getCollection("fakeentity").insertMany(Lists.newArrayList(fakeEntity, fakeChild));
 
-        BasicDBObject naturalIdEntity = new BasicDBObject();
+        Document naturalIdEntity = new Document();
         naturalIdEntity.put("_id", "naturalkey");
         naturalIdEntity.put("value", "naturalvalue");
 
-        db.getCollection("fakeentitywithnaturalid").insert(naturalIdEntity);
+        db.getCollection("fakeentitywithnaturalid").insertOne(naturalIdEntity);
     }
 
     @Before
@@ -89,10 +85,10 @@ public class TestsIntegration extends TestsWithMongo {
 
     @Test
     public void insertingSetId() {
-        DBCollection testid = db.getCollection("testid");
-        BasicDBObject dbo = new BasicDBObject();
+        MongoCollection<Document> testid = db.getCollection("testid");
+        Document dbo = new Document();
 
-        testid.insert(Lists.<DBObject>newArrayList(dbo));
+        testid.insertOne(dbo);
 
         assertThat(dbo.get("_id")).isNotNull();
     }

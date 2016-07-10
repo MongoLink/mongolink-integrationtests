@@ -21,15 +21,24 @@
 
 package org.mongolink;
 
-import java.util.Properties;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.mongodb.*;
+
 import java.io.InputStream;
+import java.util.*;
 
 public class ConfigProperties {
 
     public Settings addSettings(Settings settings) {
-        return settings.withHost(getDBHost()).withPort(getDBPort()).
-                withDbName(getDBName()).
-                withAuthentication(getDBUser(), getDBPassword());
+
+        ArrayList<MongoCredential> credentials = Lists.newArrayList();
+        if(!Strings.isNullOrEmpty(getDBUser())) {
+            MongoCredential credential = MongoCredential.createCredential(getDBUser(), "test", getDBPassword().toCharArray());
+            credentials.add(credential);
+        }
+        MongoClient mongoClient = new MongoClient(new ServerAddress(getDBHost(), getDBPort()), credentials);
+        return settings.withClient(mongoClient).withDbName("test");
     }
 
     public String getDBHost() {

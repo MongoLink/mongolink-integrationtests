@@ -21,20 +21,16 @@
 
 package org.mongolink;
 
-import com.mongodb.DB;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.mongolink.domain.session.MongoSessionImpl;
+import com.mongodb.client.MongoDatabase;
+import org.junit.*;
 import org.mongolink.domain.mapper.ContextBuilder;
+import org.mongolink.domain.session.MongoSessionImpl;
 
 public class TestsWithMongo {
 
     @BeforeClass
     public static void beforeClass() {
         ContextBuilder builder = new ContextBuilder("org.mongolink.test.integrationMapping");
-        ConfigProperties config = new ConfigProperties();
         sessionManager = MongoSessionManager.create(builder,
                 new ConfigProperties().addSettings(Settings.defaultInstance().withDefaultUpdateStrategy(UpdateStrategies.DIFF)));
 
@@ -60,7 +56,7 @@ public class TestsWithMongo {
     }
 
     private static void dropCollections() {
-        for (String collection : db.getCollectionNames()) {
+        for (String collection : db.listCollectionNames()) {
             if (!collection.startsWith("system.")) {
                 db.getCollection(collection).drop();
             }
@@ -70,6 +66,6 @@ public class TestsWithMongo {
 
     protected static MongoSessionManager sessionManager;
     protected static MongoSessionImpl mongoSession;
-    protected static DB db;
+    protected static MongoDatabase db;
 
 }

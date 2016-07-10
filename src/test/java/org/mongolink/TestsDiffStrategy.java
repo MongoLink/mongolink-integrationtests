@@ -1,11 +1,10 @@
 package org.mongolink;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
+import com.mongodb.*;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.*;
-import org.mongolink.test.entity.Comment;
-import org.mongolink.test.entity.FakeEntity;
+import org.mongolink.test.entity.*;
 
 import static org.fest.assertions.Assertions.*;
 
@@ -17,20 +16,20 @@ public class TestsDiffStrategy extends TestsWithMongo {
     }
 
     private void initData() {
-        BasicDBObject fakeEntity = new BasicDBObject();
+        Document fakeEntity = new Document();
         fakeEntity.put("_id", new ObjectId("4d9d9b5e36a9a4265ea9ecbe"));
         fakeEntity.put("value", "fake entity value");
         BasicDBList comments = new BasicDBList();
-        comments.add(new BasicDBObject("value", "test0"));
-        comments.add(new BasicDBObject("value", "test1"));
-        comments.add(new BasicDBObject("value", "test2"));
-        comments.add(new BasicDBObject("value", "test3"));
+        comments.add(new Document("value", "test0"));
+        comments.add(new Document("value", "test1"));
+        comments.add(new Document("value", "test2"));
+        comments.add(new Document("value", "test3"));
         fakeEntity.put("comments", comments);
         fakeEntity.put("index", 42);
-        fakeEntity.put("comment", new BasicDBObject("value", "the comment"));
+        fakeEntity.put("comment", new Document("value", "the comment"));
 
 
-        db.getCollection("fakeentity").insert(fakeEntity);
+        db.getCollection("fakeentity").insertOne(fakeEntity);
     }
 
     @Test
